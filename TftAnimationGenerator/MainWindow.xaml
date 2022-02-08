@@ -5,8 +5,27 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:TftAnimationGenerator"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800">
-    <Grid>
+        Title="MainWindow" Height="240" Width="240">
 
-    </Grid>
+    <Window.Resources>
+        <Style TargetType="Button">
+            <Setter Property="Height" Value="24" />
+        </Style>
+        <Style TargetType="ProgressBar">
+            <Setter Property="Height" Value="24" />
+        </Style>
+        <Style TargetType="TextBox">
+            <Setter Property="Height" Value="24" />
+        </Style>
+    </Window.Resources>
+
+    <StackPanel>
+        <Button Name="BtnOpenFile" Click="BtnOpenFile_Click">Open File</Button>
+        <Button Name="BtnOpenFolder" Click="BtnOpenFolder_Click">Open Folder</Button>
+        <Label>Code Prefix</Label>
+        <TextBox Name="TxtCodePrefix" Text="{Binding Prefix}"></TextBox>
+        <Button Click="BtnConvert_Click" Margin="0, 4">Convert</Button>
+        <Label Name="LblProgressState">0 / 0</Label>
+        <ProgressBar Name="BarProgressState"></ProgressBar>
+    </StackPanel>
 </Window>
