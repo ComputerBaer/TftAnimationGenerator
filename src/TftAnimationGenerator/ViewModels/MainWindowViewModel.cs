@@ -1,11 +1,12 @@
 ﻿using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using TftAnimationGenerator.Models;
 
 namespace TftAnimationGenerator.ViewModels
 {
     public class MainWindowViewModel : ViewModelBase
     {
-        public string Greeting => "Welcome to Avalonia!";
+        public ObservableCollection<ExportQueueEntry> QueueEntries { get; set; } = new();
 
         public List<TftPixelFormat> PixelFormats { get; } = new()
         {
