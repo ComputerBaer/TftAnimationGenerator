@@ -10,7 +10,7 @@ namespace TftAnimationGenerator.ViewModels
 
         public List<TftPixelFormat> PixelFormats { get; } = new()
         {
-            new() { Name = "R5G6R5 / RGB565" },
+            new() { Name = "R5G6B5 / RGB565" },
         };
 
         public int SelectedPixelFormat { get; set; } = 0;
