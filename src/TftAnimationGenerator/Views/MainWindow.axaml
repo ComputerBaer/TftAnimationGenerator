@@ -15,7 +15,7 @@
         <vm:MainWindowViewModel/>
     </Design.DataContext>
 
-	<Window.Styles>
+    <Window.Styles>
         <Style Selector="ComboBox">
             <Setter Property="HorizontalAlignment" Value="Stretch" />
             <Setter Property="Margin" Value="0,0,0,4" />
@@ -28,8 +28,8 @@
             <Setter Property="Margin" Value="0,0,0,6" />
         </Style>
         <Style Selector="Label.Progress">
-			<Setter Property="HorizontalAlignment" Value="Center" />
-			<Setter Property="VerticalAlignment" Value="Center" />
+            <Setter Property="HorizontalAlignment" Value="Center" />
+            <Setter Property="VerticalAlignment" Value="Center" />
             <Setter Property="FontWeight" Value="Bold" />
         </Style>
         <Style Selector="Button.IconTextButton">
@@ -41,7 +41,7 @@
         </Style>
         <Style Selector="Button.IconButton">
             <Setter Property="Margin" Value="0,0,2,0" />
-			<Setter Property="VerticalAlignment" Value="Stretch" />
+            <Setter Property="VerticalAlignment" Value="Stretch" />
         </Style>
         <Style Selector="Button.IconButton Image">
             <Setter Property="Height" Value="18" />
@@ -52,22 +52,22 @@
     <Grid ColumnDefinitions="*,*" Margin="4">
         <StackPanel Grid.Column="0" Margin="0,0,4,0">
             <StackPanel Orientation="Horizontal" Margin="0,0,0,4">
-				<Button Classes="IconTextButton">
-					<Grid ColumnDefinitions="Auto,*">
-						<Image Grid.Column="0" Source="{svg:SvgImage /Assets/Icons/folder-open.svg}" />
-						<Label Grid.Column="1">Add image(s)</Label>
-					</Grid>
-				</Button>
-				<Button Classes="IconTextButton">
-					<Grid ColumnDefinitions="Auto,*">
-						<Image Grid.Column="0" Source="{svg:SvgImage /Assets/Icons/trash.svg}" />
+                <Button Classes="IconTextButton">
+                    <Grid ColumnDefinitions="Auto,*">
+                        <Image Grid.Column="0" Source="{svg:SvgImage /Assets/Icons/folder-open.svg}" />
+                        <Label Grid.Column="1">Add image(s)</Label>
+                    </Grid>
+                </Button>
+                <Button Classes="IconTextButton">
+                    <Grid ColumnDefinitions="Auto,*">
+                        <Image Grid.Column="0" Source="{svg:SvgImage /Assets/Icons/trash.svg}" />
                         <Label Grid.Column="1">Remove image(s)</Label>
                     </Grid>
                 </Button>
-				<Button Classes="IconButton">
-					<Image Source="{svg:SvgImage /Assets/Icons/chevron-up.svg}" />
-				</Button>
-				<Button Classes="IconButton">
+                <Button Classes="IconButton">
+                    <Image Source="{svg:SvgImage /Assets/Icons/chevron-up.svg}" />
+                </Button>
+                <Button Classes="IconButton">
                     <Image Source="{svg:SvgImage /Assets/Icons/chevron-down.svg}" />
                 </Button>
             </StackPanel>
@@ -89,15 +89,15 @@
                 <ComboBox Grid.Row="0" Grid.Column="1"
                           Items="{Binding PixelFormats}"
                           SelectedIndex="{Binding SelectedPixelFormat}">
-					<ComboBox.ItemTemplate>
+                    <ComboBox.ItemTemplate>
                         <DataTemplate DataType="models:TftPixelFormat">
-							<Label Content="{Binding Name}" />
-						</DataTemplate>
-					</ComboBox.ItemTemplate>
+                            <Label Content="{Binding Name}" />
+                        </DataTemplate>
+                    </ComboBox.ItemTemplate>
                 </ComboBox>
 
                 <Label Grid.Row="1" Grid.Column="0" Classes="FieldLabel">Code Format</Label>
-				<ComboBox Grid.Row="1" Grid.Column="1"
+                <ComboBox Grid.Row="1" Grid.Column="1"
                           Items="{Binding CodeFormats}"
                           SelectedIndex="{Binding SelectedCodeFormat}">
                     <ComboBox.ItemTemplate>
@@ -130,8 +130,8 @@
                 <Label Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2" Classes="Progress"
                        Content="{Binding ExportProgressText}" />
 
-				<Label Grid.Row="3" Grid.Column="0">Current Frame</Label>
-				<Label Grid.Row="3" Grid.Column="1" Content="{Binding ExportCurrentFile}" />
+                <Label Grid.Row="3" Grid.Column="0">Current Frame</Label>
+                <Label Grid.Row="3" Grid.Column="1" Content="{Binding ExportCurrentFile}" />
             </Grid>
         </StackPanel>
     </Grid>
