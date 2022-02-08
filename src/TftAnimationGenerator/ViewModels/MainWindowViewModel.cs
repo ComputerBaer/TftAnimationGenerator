@@ -31,7 +31,14 @@ namespace TftAnimationGenerator.ViewModels
         public int SelectedPixelFormat { get; set; } = 0;
         public int SelectedCodeFormat { get; set; } = 0;
         public string CodePrefix { get; set; } = "Anim_";
-        public string OutputFile { get; set; } = "animation.h";
+
+        private string _outputFile = "animation.h";
+
+        public string OutputFile
+        {
+            get => _outputFile;
+            set => this.RaiseAndSetIfChanged(ref _outputFile, value);
+        }
 
         public int ExportProgressMax { get; set; } = 0;
         public int ExportProgress { get; set; } = 0;
@@ -42,6 +49,7 @@ namespace TftAnimationGenerator.ViewModels
         public ReactiveCommand<Unit, Unit> RemoveImages { get; set; }
         public ReactiveCommand<Unit, Unit> MoveImagesUp { get; set; }
         public ReactiveCommand<Unit, Unit> MoveImagesDown { get; set; }
+        public ReactiveCommand<Unit, Unit> SelectOutputFile { get; set; }
 
         public MainWindowViewModel()
         {
@@ -49,6 +57,7 @@ namespace TftAnimationGenerator.ViewModels
             RemoveImages = ReactiveCommand.Create(RunRemoveImages);
             MoveImagesUp = ReactiveCommand.Create(RunMoveImagesUp);
             MoveImagesDown = ReactiveCommand.Create(RunMoveImagesDown);
+            SelectOutputFile = ReactiveCommand.CreateFromTask(RunSelectOutputFile);
         }
 
         private async Task RunAddImages()
@@ -136,6 +145,29 @@ namespace TftAnimationGenerator.ViewModels
                 QueueEntries.Move(index, newIndex);
                 SelectedQueueEntries.Add(QueueEntries[newIndex]);
             }
+        }
+
+        private async Task RunSelectOutputFile()
+        {
+            var saveFileDialog = new SaveFileDialog
+            {
+                DefaultExtension = "h",
+                Filters = new List<FileDialogFilter>
+                {
+                    new() { Name = "C / C++ Header", Extensions = new() { "h", "hpp" }},
+                    new() { Name = "All files", Extensions = new() { "*" }},
+                },
+                Title = "Select Output File"
+            };
+
+            var mainWindow = GetMainWindow();
+            string? file = await saveFileDialog.ShowAsync(mainWindow);
+            if (string.IsNullOrEmpty(file))
+            {
+                return;
+            }
+            
+            OutputFile = file;
         }
 
         private Window GetMainWindow()

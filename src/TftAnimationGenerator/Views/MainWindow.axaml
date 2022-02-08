@@ -118,7 +118,8 @@
                 <TextBox Grid.Row="0" Grid.Column="1" Padding="10,6,36,5"
                          Text="{Binding OutputFile}" />
                 <Button Grid.Row="0" Grid.Column="1" Background="Transparent" Padding="6"
-                        HorizontalAlignment="Right" VerticalAlignment="Center">
+                        HorizontalAlignment="Right" VerticalAlignment="Center"
+                        Command="{Binding SelectOutputFile}">
                     <Image Source="{svg:SvgImage /Assets/Icons/folder-open.svg}" Height="18" />
                 </Button>
 
