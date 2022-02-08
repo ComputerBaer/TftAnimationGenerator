@@ -3,8 +3,11 @@
         xmlns:vm="using:TftAnimationGenerator.ViewModels"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:svg="clr-namespace:Avalonia.Svg.Skia;assembly=Avalonia.Svg.Skia"
+        xmlns:models="clr-namespace:TftAnimationGenerator.Models"
         mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
         x:Class="TftAnimationGenerator.Views.MainWindow"
+        Width="800" Height="450"
         Icon="/Assets/avalonia-logo.ico"
         Title="TftAnimationGenerator">
 
@@ -12,6 +15,81 @@
         <vm:MainWindowViewModel/>
     </Design.DataContext>
 
-    <TextBlock Text="{Binding Greeting}" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+	<Window.Styles>
+        <Style Selector="ComboBox">
+            <Setter Property="HorizontalAlignment" Value="Stretch" />
+            <Setter Property="Margin" Value="0,0,0,4" />
+        </Style>
+        <Style Selector="Label.FieldLabel">
+            <Setter Property="VerticalAlignment" Value="Center" />
+        </Style>
+        <Style Selector="Label.GroupTitle">
+            <Setter Property="FontWeight" Value="Bold" />
+            <Setter Property="Margin" Value="0,0,0,6" />
+        </Style>
+        <Style Selector="Label.Progress">
+			<Setter Property="HorizontalAlignment" Value="Center" />
+			<Setter Property="VerticalAlignment" Value="Center" />
+            <Setter Property="FontWeight" Value="Bold" />
+        </Style>
+    </Window.Styles>
+
+	<Grid ColumnDefinitions="*,*" Margin="4">
+        <StackPanel Grid.Column="0">
+        </StackPanel>
+
+        <StackPanel Grid.Column="1">
+            <Label Classes="GroupTitle">Export Settings</Label>
+            <Grid ColumnDefinitions="120,*" RowDefinitions="Auto,Auto,Auto" Margin="0,0,0,32">
+                <Label Grid.Row="0" Grid.Column="0" Classes="FieldLabel">Pixel Format</Label>
+                <ComboBox Grid.Row="0" Grid.Column="1"
+                          Items="{Binding PixelFormats}"
+                          SelectedIndex="{Binding SelectedPixelFormat}">
+					<ComboBox.ItemTemplate>
+                        <DataTemplate DataType="models:TftPixelFormat">
+							<Label Content="{Binding Name}" />
+						</DataTemplate>
+					</ComboBox.ItemTemplate>
+                </ComboBox>
+
+                <Label Grid.Row="1" Grid.Column="0" Classes="FieldLabel">Code Format</Label>
+				<ComboBox Grid.Row="1" Grid.Column="1"
+                          Items="{Binding CodeFormats}"
+                          SelectedIndex="{Binding SelectedCodeFormat}">
+                    <ComboBox.ItemTemplate>
+                        <DataTemplate DataType="models:TftCodeFormat">
+                            <Label Content="{Binding Name}" />
+                        </DataTemplate>
+                    </ComboBox.ItemTemplate>
+                </ComboBox>
+
+                <Label Grid.Row="2" Grid.Column="0" Classes="FieldLabel">Code Prefix</Label>
+                <TextBox Grid.Row="2" Grid.Column="1" Text="{Binding CodePrefix}" />
+            </Grid>
+
+            <Label Classes="GroupTitle">Export</Label>
+            <Grid ColumnDefinitions="120,*" RowDefinitions="Auto,Auto,Auto,Auto">
+                <Label Grid.Row="0" Grid.Column="0" Classes="FieldLabel">Output File</Label>
+                <TextBox Grid.Row="0" Grid.Column="1" Padding="10,6,36,5"
+                         Text="{Binding OutputFile}" />
+                <Button Grid.Row="0" Grid.Column="1" Background="Transparent" Padding="6"
+                        HorizontalAlignment="Right" VerticalAlignment="Center">
+                    <Image Source="{svg:SvgImage /Assets/Icons/folder-open.svg}" Height="18" />
+                </Button>
+
+                <Button Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" Margin="0,12,0,6"
+                        HorizontalAlignment="Stretch" HorizontalContentAlignment="Center">Export</Button>
+
+                <ProgressBar Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2" Height="30"
+                             Maximum="{Binding ExportProgressMax}"
+                             Value="{Binding ExportProgress}" />
+                <Label Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2" Classes="Progress"
+                       Content="{Binding ExportProgressText}" />
+
+				<Label Grid.Row="3" Grid.Column="0">Current Frame</Label>
+				<Label Grid.Row="3" Grid.Column="1" Content="{Binding ExportCurrentFile}" />
+            </Grid>
+        </StackPanel>
+    </Grid>
 
 </Window>
