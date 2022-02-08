@@ -50,37 +50,38 @@
     </Window.Styles>
 
     <Grid ColumnDefinitions="*,*" Margin="4">
-        <StackPanel Grid.Column="0" Margin="0,0,4,0">
-            <StackPanel Orientation="Horizontal" Margin="0,0,0,4">
-                <Button Classes="IconTextButton">
+        <Grid Grid.Column="0" RowDefinitions="Auto,*" Margin="0,0,4,0">
+            <StackPanel Grid.Row="0" Orientation="Horizontal" Margin="0,0,0,4">
+                <Button Classes="IconTextButton" Command="{Binding AddImages}">
                     <Grid ColumnDefinitions="Auto,*">
                         <Image Grid.Column="0" Source="{svg:SvgImage /Assets/Icons/folder-open.svg}" />
                         <Label Grid.Column="1">Add image(s)</Label>
                     </Grid>
                 </Button>
-                <Button Classes="IconTextButton">
+                <Button Classes="IconTextButton" Command="{Binding RemoveImages}">
                     <Grid ColumnDefinitions="Auto,*">
                         <Image Grid.Column="0" Source="{svg:SvgImage /Assets/Icons/trash.svg}" />
                         <Label Grid.Column="1">Remove image(s)</Label>
                     </Grid>
                 </Button>
-                <Button Classes="IconButton">
+                <Button Classes="IconButton" Command="{Binding MoveImagesUp}">
                     <Image Source="{svg:SvgImage /Assets/Icons/chevron-up.svg}" />
                 </Button>
-                <Button Classes="IconButton">
+                <Button Classes="IconButton" Command="{Binding MoveImagesDown}">
                     <Image Source="{svg:SvgImage /Assets/Icons/chevron-down.svg}" />
                 </Button>
             </StackPanel>
 
-            <ListBox Background="Transparent" SelectionMode="Multiple"
-                     Items="{Binding QueueEntries}">
+            <ListBox Grid.Row="1" Background="Transparent" SelectionMode="Multiple"
+                     Items="{Binding QueueEntries}"
+                     SelectedItems="{Binding SelectedQueueEntries}">
                 <ListBox.ItemTemplate>
                     <DataTemplate DataType="models:ExportQueueEntry">
                         <Label Content="{Binding Name}"></Label>
                     </DataTemplate>
                 </ListBox.ItemTemplate>
             </ListBox>
-        </StackPanel>
+        </Grid>
 
         <StackPanel Grid.Column="1">
             <Label Classes="GroupTitle">Export Settings</Label>
