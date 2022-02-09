@@ -29,6 +29,9 @@ class Build : NukeBuild
     [Parameter("Configuration to build - Default is 'Debug' (local) or 'Release' (server)")]
     readonly Configuration Configuration = IsLocalBuild ? Configuration.Debug : Configuration.Release;
 
+    [Parameter]
+    readonly string Version = "0.0.0";
+
     [Solution] readonly Solution Solution;
     [GitRepository] readonly GitRepository GitRepository;
 
@@ -72,6 +75,7 @@ class Build : NukeBuild
             {
                 DotNetPublish(s => s
                     .SetConfiguration(Configuration)
+                    .SetVersion(Version)
                     .SetRuntime(targetRuntime)
                     .EnablePublishSingleFile()
                     .DisableSelfContained()
