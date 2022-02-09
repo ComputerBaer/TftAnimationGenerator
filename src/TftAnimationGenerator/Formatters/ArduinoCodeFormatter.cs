@@ -1,5 +1,8 @@
 using System.IO;
 using System.Threading.Tasks;
+using SixLabors.ImageSharp.Memory;
+using SixLabors.ImageSharp.PixelFormats;
+using TftAnimationGenerator.Models;
 
 namespace TftAnimationGenerator.Formatters
 {
@@ -20,6 +23,41 @@ namespace TftAnimationGenerator.Formatters
             await writer.WriteLineAsync($"const int {prefix}FrameHeight = {height};");
 
             await writer.WriteLineAsync($"const unsigned short PROGMEM {prefix}Frames[{count}][{width * height}] = {{");
+        }
+
+        public async Task WriteFrameAsync(StreamWriter writer, TftPixelFormat pixelFormat, Buffer2D<Rgba32> pixelBuffer, int width, int height, bool isLast)
+        {
+            await writer.WriteAsync("  { ");
+
+            int maxX = width - 1;
+            int maxY = height - 1;
+
+            for (int y = 0; y < height; y++)
+            {
+                for (int x = 0; x < width; x++)
+                {
+                    await writer.WriteAsync(pixelFormat.HexFormatter(pixelBuffer[x, y]));
+
+                    if (y < maxY || x < maxX) // only exclude last pixel
+                    {
+                        await writer.WriteAsync(", ");
+                    }
+                }
+            }
+
+            if (isLast)
+            {
+                await writer.WriteLineAsync(" }");
+            }
+            else
+            {
+                await writer.WriteLineAsync(" },");
+            }
+        }
+
+        public async Task WriteFooterAsync(StreamWriter writer)
+        {
+            await writer.WriteLineAsync("};");
         }
     }
 }

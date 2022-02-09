@@ -4,11 +4,13 @@ using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
 using System.Reactive;
+using System.Text;
 using System.Threading.Tasks;
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Controls.ApplicationLifetimes;
 using ReactiveUI;
+using SixLabors.ImageSharp.PixelFormats;
 using TftAnimationGenerator.Formatters;
 using TftAnimationGenerator.Models;
 using Image = SixLabors.ImageSharp.Image;
@@ -35,6 +37,9 @@ namespace TftAnimationGenerator.ViewModels
         public string CodePrefix { get; set; } = "Anim_";
 
         private string _outputFile = "animation.h";
+        private int _exportProgressMax;
+        private int _exportProgress;
+        private string _exportCurrentFile = "";
 
         public string OutputFile
         {
@@ -42,16 +47,40 @@ namespace TftAnimationGenerator.ViewModels
             set => this.RaiseAndSetIfChanged(ref _outputFile, value);
         }
 
-        public int ExportProgressMax { get; set; } = 0;
-        public int ExportProgress { get; set; } = 0;
+        public int ExportProgressMax
+        {
+            get => _exportProgressMax;
+            set
+            {
+                this.RaiseAndSetIfChanged(ref _exportProgressMax, value);
+                this.RaisePropertyChanged(nameof(ExportProgressText));
+            }
+        }
+
+        public int ExportProgress
+        {
+            get => _exportProgress;
+            set
+            {
+                this.RaiseAndSetIfChanged(ref _exportProgress, value);
+                this.RaisePropertyChanged(nameof(ExportProgressText));
+            }
+        }
+
         public string ExportProgressText => $"{ExportProgress} / {ExportProgressMax}";
-        public string ExportCurrentFile { get; set; } = "";
+
+        public string ExportCurrentFile
+        {
+            get => _exportCurrentFile;
+            set => this.RaiseAndSetIfChanged(ref _exportCurrentFile, value);
+        }
 
         public ReactiveCommand<Unit, Unit> AddImages { get; set; }
         public ReactiveCommand<Unit, Unit> RemoveImages { get; set; }
         public ReactiveCommand<Unit, Unit> MoveImagesUp { get; set; }
         public ReactiveCommand<Unit, Unit> MoveImagesDown { get; set; }
         public ReactiveCommand<Unit, Unit> SelectOutputFile { get; set; }
+        public ReactiveCommand<Unit, Unit> ExportAnimation { get; set; }
 
         public MainWindowViewModel()
         {
@@ -60,6 +89,7 @@ namespace TftAnimationGenerator.ViewModels
             MoveImagesUp = ReactiveCommand.Create(RunMoveImagesUp);
             MoveImagesDown = ReactiveCommand.Create(RunMoveImagesDown);
             SelectOutputFile = ReactiveCommand.CreateFromTask(RunSelectOutputFile);
+            ExportAnimation = ReactiveCommand.CreateFromTask(RunExportAnimation);
         }
 
         private async Task RunAddImages()
@@ -178,6 +208,51 @@ namespace TftAnimationGenerator.ViewModels
             }
             
             OutputFile = file;
+        }
+
+        private async Task RunExportAnimation()
+        {
+            if (QueueEntries.Count == 0)
+            {
+                return;
+            }
+
+            // copy all settings and data
+            var pixelFormat = PixelFormats[SelectedPixelFormat];
+            var codeFormat = CodeFormats[SelectedCodeFormat];
+            string prefix = CodePrefix;
+
+            ExportQueueEntry[] queue = QueueEntries.Select(e => e.Clone()).ToArray();
+
+            // update UI
+            ExportProgress = 0;
+            ExportProgressMax = queue.Length;
+
+            // open output file
+            await using var fileStream = new FileStream(OutputFile, FileMode.Create, FileAccess.Write);
+            await using var writer = new StreamWriter(fileStream, Encoding.UTF8);
+
+            // header
+            int width = queue[0].Width;
+            int height = queue[0].Height;
+            await codeFormat.CodeFormatter.WriteHeaderAsync(writer, prefix, queue.Length, width, height);
+
+            // write frames
+            for (var i = 0; i < queue.Length; i++)
+            {
+                var queueEntry = queue[i];
+                ExportCurrentFile = queueEntry.Name;
+
+                var image = await Image.LoadAsync<Rgba32>(queueEntry.Filename);
+                var pixelBuffer = image.Frames[0].PixelBuffer;
+                await codeFormat.CodeFormatter.WriteFrameAsync(writer, pixelFormat, pixelBuffer, width, height, i == queue.Length - 1);
+
+                ExportProgress = i + 1;
+            }
+
+            // footer
+            await codeFormat.CodeFormatter.WriteFooterAsync(writer);
+            await writer.FlushAsync();
         }
 
         private Window GetMainWindow()

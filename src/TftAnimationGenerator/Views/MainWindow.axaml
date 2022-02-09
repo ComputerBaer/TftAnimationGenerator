@@ -124,7 +124,8 @@
                 </Button>
 
                 <Button Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" Margin="0,12,0,6"
-                        HorizontalAlignment="Stretch" HorizontalContentAlignment="Center">Export</Button>
+                        HorizontalAlignment="Stretch" HorizontalContentAlignment="Center"
+                        Command="{Binding ExportAnimation}">Export</Button>
 
                 <ProgressBar Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2" Height="30"
                              Maximum="{Binding ExportProgressMax}"
