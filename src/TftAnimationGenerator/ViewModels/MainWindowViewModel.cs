@@ -9,6 +9,7 @@ using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Controls.ApplicationLifetimes;
 using ReactiveUI;
+using TftAnimationGenerator.Formatters;
 using TftAnimationGenerator.Models;
 
 namespace TftAnimationGenerator.ViewModels
@@ -25,7 +26,7 @@ namespace TftAnimationGenerator.ViewModels
 
         public List<TftCodeFormat> CodeFormats { get; } = new()
         {
-            new() { Name = "Arduino" },
+            new() { Name = "Arduino", CodeFormatter = new ArduinoCodeFormatter() },
         };
 
         public int SelectedPixelFormat { get; set; } = 0;
