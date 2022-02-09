@@ -2,7 +2,7 @@ using TftAnimationGenerator.Formatters;
 
 namespace TftAnimationGenerator.Models
 {
-    public class TftCodeFormat
+    public partial class TftCodeFormat
     {
         public string Name { get; init; }
 

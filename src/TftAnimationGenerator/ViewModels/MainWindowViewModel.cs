@@ -11,7 +11,6 @@ using Avalonia.Controls;
 using Avalonia.Controls.ApplicationLifetimes;
 using ReactiveUI;
 using SixLabors.ImageSharp.PixelFormats;
-using TftAnimationGenerator.Formatters;
 using TftAnimationGenerator.Models;
 using Image = SixLabors.ImageSharp.Image;
 
@@ -22,15 +21,9 @@ namespace TftAnimationGenerator.ViewModels
         public ObservableCollection<ExportQueueEntry> QueueEntries { get; set; } = new();
         public ObservableCollection<ExportQueueEntry> SelectedQueueEntries { get; set; } = new();
 
-        public List<TftPixelFormat> PixelFormats { get; } = new()
-        {
-            new() { Name = "R5G6B5 / RGB565 (16 Bit)", HexFormatter = PixelFormatter.ToHexR5G6B5_Packed },
-        };
+        public List<TftPixelFormat> PixelFormats { get; } = new(TftPixelFormat.PixelFormats);
 
-        public List<TftCodeFormat> CodeFormats { get; } = new()
-        {
-            new() { Name = "Arduino", CodeFormatter = new ArduinoCodeFormatter() },
-        };
+        public List<TftCodeFormat> CodeFormats { get; } = new(TftCodeFormat.CodeFormats);
 
         public int SelectedPixelFormat { get; set; } = 0;
         public int SelectedCodeFormat { get; set; } = 0;
@@ -235,7 +228,7 @@ namespace TftAnimationGenerator.ViewModels
             // header
             int width = queue[0].Width;
             int height = queue[0].Height;
-            await codeFormat.CodeFormatter.WriteHeaderAsync(writer, prefix, queue.Length, width, height);
+            await codeFormat.CodeFormatter.WriteHeaderAsync(writer, pixelFormat, prefix, queue.Length, width, height);
 
             // write frames
             for (var i = 0; i < queue.Length; i++)

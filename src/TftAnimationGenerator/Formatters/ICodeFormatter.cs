@@ -8,7 +8,7 @@ namespace TftAnimationGenerator.Formatters
 {
     public interface ICodeFormatter
     {
-        Task WriteHeaderAsync(StreamWriter writer, string prefix, int count, int width, int height);
+        Task WriteHeaderAsync(StreamWriter writer, TftPixelFormat pixelFormat, string prefix, int count, int width, int height);
 
         Task WriteFrameAsync(StreamWriter writer, TftPixelFormat pixelFormat, Buffer2D<Rgba32> pixelBuffer, int width, int height, bool isLast);
 
