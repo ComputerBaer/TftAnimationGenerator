@@ -3,9 +3,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.0.32112.339
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TftAnimationGenerator", "TftAnimationGenerator/TftAnimationGenerator.csproj", "{BE872667-4957-4B77-BB1D-983F61FF8C8F}"
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "_build", "build\_build.csproj", "{EB750B81-9E91-4923-BF78-538CF0102019}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TftAnimationGenerator", "src\TftAnimationGenerator\TftAnimationGenerator.csproj", "{66039277-0C2B-4429-A0D8-F8263EE0BBAA}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,10 +15,10 @@ Global
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
 		{EB750B81-9E91-4923-BF78-538CF0102019}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{EB750B81-9E91-4923-BF78-538CF0102019}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{BE872667-4957-4B77-BB1D-983F61FF8C8F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{BE872667-4957-4B77-BB1D-983F61FF8C8F}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{BE872667-4957-4B77-BB1D-983F61FF8C8F}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{BE872667-4957-4B77-BB1D-983F61FF8C8F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{66039277-0C2B-4429-A0D8-F8263EE0BBAA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{66039277-0C2B-4429-A0D8-F8263EE0BBAA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{66039277-0C2B-4429-A0D8-F8263EE0BBAA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{66039277-0C2B-4429-A0D8-F8263EE0BBAA}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

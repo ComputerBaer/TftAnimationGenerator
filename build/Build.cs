@@ -32,14 +32,18 @@ class Build : NukeBuild
     [Solution] readonly Solution Solution;
     [GitRepository] readonly GitRepository GitRepository;
 
-    static readonly string[] TargetRuntimes = { "win-x64", "win-x86" };
+    static readonly string[] TargetRuntimes = { "win-x64", "win-x86", "linux-x64" };
 
+    AbsolutePath SourceDirectory => RootDirectory / "src";
+    AbsolutePath TestsDirectory => RootDirectory / "tests";
     AbsolutePath OutputDirectory => RootDirectory / "output";
 
     Target Clean => _ => _
         .Before(Restore)
         .Executes(() =>
         {
+            SourceDirectory.GlobDirectories("**/bin", "**/obj").ForEach(DeleteDirectory);
+            TestsDirectory.GlobDirectories("**/bin", "**/obj").ForEach(DeleteDirectory);
             EnsureCleanDirectory(OutputDirectory);
         });
 
