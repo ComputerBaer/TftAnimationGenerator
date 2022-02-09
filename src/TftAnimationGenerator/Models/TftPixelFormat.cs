@@ -7,6 +7,6 @@ namespace TftAnimationGenerator.Models
     {
         public string Name { get; init; }
 
-        public Func<Rgba32, string> HexFormatter { get; set; }
+        public Func<Rgba32, string[]> HexFormatter { get; set; }
     }
 }

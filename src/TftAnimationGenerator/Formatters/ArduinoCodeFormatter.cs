@@ -36,7 +36,8 @@ namespace TftAnimationGenerator.Formatters
             {
                 for (int x = 0; x < width; x++)
                 {
-                    await writer.WriteAsync(pixelFormat.HexFormatter(pixelBuffer[x, y]));
+                    string[] hexPixel = pixelFormat.HexFormatter(pixelBuffer[x, y]);
+                    await writer.WriteAsync(string.Join(", ", hexPixel));
 
                     if (y < maxY || x < maxX) // only exclude last pixel
                     {

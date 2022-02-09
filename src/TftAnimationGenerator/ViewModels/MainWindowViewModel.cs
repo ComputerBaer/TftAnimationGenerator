@@ -24,7 +24,7 @@ namespace TftAnimationGenerator.ViewModels
 
         public List<TftPixelFormat> PixelFormats { get; } = new()
         {
-            new() { Name = "R5G6B5 / RGB565", HexFormatter = PixelFormatter.ToHexR5G6B5 },
+            new() { Name = "R5G6B5 / RGB565 (16 Bit)", HexFormatter = PixelFormatter.ToHexR5G6B5_Packed },
         };
 
         public List<TftCodeFormat> CodeFormats { get; } = new()
