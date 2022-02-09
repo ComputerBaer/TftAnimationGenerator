@@ -11,6 +11,7 @@ using Avalonia.Controls.ApplicationLifetimes;
 using ReactiveUI;
 using TftAnimationGenerator.Formatters;
 using TftAnimationGenerator.Models;
+using Image = SixLabors.ImageSharp.Image;
 
 namespace TftAnimationGenerator.ViewModels
 {
@@ -21,7 +22,7 @@ namespace TftAnimationGenerator.ViewModels
 
         public List<TftPixelFormat> PixelFormats { get; } = new()
         {
-            new() { Name = "R5G6B5 / RGB565" },
+            new() { Name = "R5G6B5 / RGB565", HexFormatter = PixelFormatter.ToHexR5G6B5 },
         };
 
         public List<TftCodeFormat> CodeFormats { get; } = new()
@@ -89,10 +90,18 @@ namespace TftAnimationGenerator.ViewModels
                     continue;
                 }
 
+                var imageInfo = await Image.IdentifyAsync(fileInfo.FullName);
+                if (imageInfo == null)
+                {
+                    continue;
+                }
+
                 QueueEntries.Add(new ExportQueueEntry
                 {
                     Filename = fileInfo.FullName,
                     Name = fileInfo.Name,
+                    Width = imageInfo.Width,
+                    Height = imageInfo.Height,
                 });
             }
         }
