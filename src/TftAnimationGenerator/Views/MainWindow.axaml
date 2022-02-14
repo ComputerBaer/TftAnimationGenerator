@@ -76,7 +76,7 @@
                      Items="{Binding QueueEntries}"
                      SelectedItems="{Binding SelectedQueueEntries}">
                 <ListBox.ItemTemplate>
-                    <DataTemplate DataType="models:ExportQueueEntry">
+                    <DataTemplate DataType="vm:QueueEntryViewModel">
                         <Label Content="{Binding Name}" />
                     </DataTemplate>
                 </ListBox.ItemTemplate>

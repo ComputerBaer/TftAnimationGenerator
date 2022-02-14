@@ -18,8 +18,8 @@ namespace TftAnimationGenerator.ViewModels
 {
     public class MainWindowViewModel : ViewModelBase
     {
-        public ObservableCollection<ExportQueueEntry> QueueEntries { get; set; } = new();
-        public ObservableCollection<ExportQueueEntry> SelectedQueueEntries { get; set; } = new();
+        public ObservableCollection<QueueEntryViewModel> QueueEntries { get; set; } = new();
+        public ObservableCollection<QueueEntryViewModel> SelectedQueueEntries { get; set; } = new();
 
         public List<TftPixelFormat> PixelFormats { get; } = new(TftPixelFormat.PixelFormats);
 
@@ -119,19 +119,19 @@ namespace TftAnimationGenerator.ViewModels
                     continue;
                 }
 
-                QueueEntries.Add(new ExportQueueEntry
+                QueueEntries.Add(new QueueEntryViewModel(this, new ExportQueueEntry
                 {
                     Filename = fileInfo.FullName,
                     Name = fileInfo.Name,
                     Width = imageInfo.Width,
                     Height = imageInfo.Height,
-                });
+                }));
             }
         }
 
         private void RunRemoveImages()
         {
-            var remove = new List<ExportQueueEntry>(SelectedQueueEntries);
+            var remove = new List<QueueEntryViewModel>(SelectedQueueEntries);
             SelectedQueueEntries.Clear();
 
             foreach (var entry in remove)
@@ -215,7 +215,7 @@ namespace TftAnimationGenerator.ViewModels
             var codeFormat = CodeFormats[SelectedCodeFormat];
             string prefix = CodePrefix;
 
-            ExportQueueEntry[] queue = QueueEntries.Select(e => e.Clone()).ToArray();
+            ExportQueueEntry[] queue = QueueEntries.Select(e => e.Model.Clone()).ToArray();
 
             // update UI
             ExportProgress = 0;
