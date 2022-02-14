@@ -28,13 +28,13 @@
     <Grid ColumnDefinitions="*,Auto">
         <Label Grid.Column="0" Content="{Binding Name}" />
         <StackPanel Grid.Column="1" Orientation="Horizontal" IsVisible="{Binding ActionsVisible}">
-            <Button Classes="IconButton">
+            <Button Classes="IconButton" Command="{Binding MoveUpCmd}">
                 <Image Source="{svg:SvgImage /Assets/Icons/chevron-up.svg}" />
             </Button>
-            <Button Classes="IconButton">
+            <Button Classes="IconButton" Command="{Binding MoveDownCmd}">
                 <Image Source="{svg:SvgImage /Assets/Icons/chevron-down.svg}" />
             </Button>
-            <Button Classes="IconButton">
+            <Button Classes="IconButton" Command="{Binding RemoveCmd}">
                 <Image Source="{svg:SvgImage /Assets/Icons/trash.svg}" />
             </Button>
         </StackPanel>

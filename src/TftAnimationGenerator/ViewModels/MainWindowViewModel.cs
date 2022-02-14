@@ -68,21 +68,21 @@ namespace TftAnimationGenerator.ViewModels
             set => this.RaiseAndSetIfChanged(ref _exportCurrentFile, value);
         }
 
-        public ReactiveCommand<Unit, Unit> AddImages { get; set; }
-        public ReactiveCommand<Unit, Unit> RemoveImages { get; set; }
-        public ReactiveCommand<Unit, Unit> MoveImagesUp { get; set; }
-        public ReactiveCommand<Unit, Unit> MoveImagesDown { get; set; }
-        public ReactiveCommand<Unit, Unit> SelectOutputFile { get; set; }
-        public ReactiveCommand<Unit, Unit> ExportAnimation { get; set; }
+        public ReactiveCommand<Unit, Unit> AddImagesCmd { get; set; }
+        public ReactiveCommand<Unit, Unit> RemoveImagesCmd { get; set; }
+        public ReactiveCommand<Unit, Unit> MoveImagesUpCmd { get; set; }
+        public ReactiveCommand<Unit, Unit> MoveImagesDownCmd { get; set; }
+        public ReactiveCommand<Unit, Unit> SelectOutputFileCmd { get; set; }
+        public ReactiveCommand<Unit, Unit> ExportAnimationCmd { get; set; }
 
         public MainWindowViewModel()
         {
-            AddImages = ReactiveCommand.CreateFromTask(RunAddImages);
-            RemoveImages = ReactiveCommand.Create(RunRemoveImages);
-            MoveImagesUp = ReactiveCommand.Create(RunMoveImagesUp);
-            MoveImagesDown = ReactiveCommand.Create(RunMoveImagesDown);
-            SelectOutputFile = ReactiveCommand.CreateFromTask(RunSelectOutputFile);
-            ExportAnimation = ReactiveCommand.CreateFromTask(RunExportAnimation);
+            AddImagesCmd = ReactiveCommand.CreateFromTask(RunAddImages);
+            RemoveImagesCmd = ReactiveCommand.Create(RunRemoveImages);
+            MoveImagesUpCmd = ReactiveCommand.Create(RunMoveImagesUp);
+            MoveImagesDownCmd = ReactiveCommand.Create(RunMoveImagesDown);
+            SelectOutputFileCmd = ReactiveCommand.CreateFromTask(RunSelectOutputFile);
+            ExportAnimationCmd = ReactiveCommand.CreateFromTask(RunExportAnimation);
         }
 
         private async Task RunAddImages()
@@ -119,64 +119,76 @@ namespace TftAnimationGenerator.ViewModels
                     continue;
                 }
 
-                QueueEntries.Add(new QueueEntryViewModel(this, new ExportQueueEntry
+                QueueEntries.Add(new QueueEntryViewModel(new ExportQueueEntry
                 {
                     Filename = fileInfo.FullName,
                     Name = fileInfo.Name,
                     Width = imageInfo.Width,
                     Height = imageInfo.Height,
-                }));
+                }, this));
             }
         }
 
         private void RunRemoveImages()
         {
-            var remove = new List<QueueEntryViewModel>(SelectedQueueEntries);
-            SelectedQueueEntries.Clear();
+            RemoveImages(new List<QueueEntryViewModel>(SelectedQueueEntries));
+        }
 
-            foreach (var entry in remove)
+        public void RemoveImages(IEnumerable<QueueEntryViewModel> entries)
+        {
+            foreach (var entry in entries)
             {
+                SelectedQueueEntries.Remove(entry);
                 QueueEntries.Remove(entry);
             }
         }
-        private void RunMoveImagesUp()
+
+        private void RunMoveImagesUp() => MoveImagesUp(SelectedQueueEntries);
+        private void RunMoveImagesDown() => MoveImagesDown(SelectedQueueEntries);
+
+        public void MoveImagesUp(IEnumerable<QueueEntryViewModel> entries) => MoveImages(entries, -1);
+        public void MoveImagesDown(IEnumerable<QueueEntryViewModel> entries) => MoveImages(entries, 1);
+
+        private void MoveImages(IEnumerable<QueueEntryViewModel> entries, int direction)
         {
-            List<int> selected = SelectedQueueEntries.Select(e => QueueEntries.IndexOf(e)).OrderBy(i => i).ToList();
-            SelectedQueueEntries.Clear();
+            bool moveNegative = direction < 0;
 
-            for (var i = 0; i < selected.Count; i++)
-            {
-                int index = selected[i];
-                if (index == i)
-                {
-                    SelectedQueueEntries.Add(QueueEntries[index]);
-                    continue;
-                }
+            var entriesEnumerable = entries.Select(e => QueueEntries.IndexOf(e));
+            entriesEnumerable = moveNegative ? entriesEnumerable.OrderBy(i => i) : entriesEnumerable.OrderByDescending(i => i);
 
-                int newIndex = index - 1;
-                QueueEntries.Move(index, newIndex);
-                SelectedQueueEntries.Add(QueueEntries[newIndex]);
-            }
-        }
+            List<int> sortedEntries = entriesEnumerable.ToList();
+            HashSet<int> selectedEntries = SelectedQueueEntries.Select(e => QueueEntries.IndexOf(e)).OrderBy(i => i).ToHashSet();
 
-        private void RunMoveImagesDown()
-        {
-            List<int> selected = SelectedQueueEntries.Select(e => QueueEntries.IndexOf(e)).OrderByDescending(i => i).ToList();
             SelectedQueueEntries.Clear();
 
             int lastIndex = QueueEntries.Count - 1;
-            for (var i = 0; i < selected.Count; i++)
+            for (var i = 0; i < sortedEntries.Count; i++)
             {
-                int index = selected[i];
-                if (index == lastIndex - i)
+                int index = sortedEntries[i];
+                if ((moveNegative && index == i) || (!moveNegative && index == lastIndex - i))
                 {
-                    SelectedQueueEntries.Add(QueueEntries[index]);
+                    SelectEntry(index, index);
                     continue;
                 }
 
-                int newIndex = index + 1;
+                int newIndex = index + direction;
                 QueueEntries.Move(index, newIndex);
+
+                SelectEntry(index, newIndex);
+                SelectEntry(newIndex, index);
+            }
+
+            foreach (var selectedEntry in selectedEntries)
+            {
+                SelectedQueueEntries.Add(QueueEntries[selectedEntry]);
+            }
+
+            void SelectEntry(int oldIndex, int newIndex)
+            {
+                if (!selectedEntries.Contains(oldIndex)) return;
+
                 SelectedQueueEntries.Add(QueueEntries[newIndex]);
+                selectedEntries.Remove(oldIndex);
             }
         }
 
