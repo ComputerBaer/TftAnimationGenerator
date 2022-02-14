@@ -74,13 +74,8 @@
 
             <ListBox Grid.Row="1" Background="Transparent" SelectionMode="Multiple"
                      Items="{Binding QueueEntries}"
-                     SelectedItems="{Binding SelectedQueueEntries}">
-                <ListBox.ItemTemplate>
-                    <DataTemplate DataType="vm:QueueEntryViewModel">
-                        <Label Content="{Binding Name}" />
-                    </DataTemplate>
-                </ListBox.ItemTemplate>
-            </ListBox>
+                     SelectedItems="{Binding SelectedQueueEntries}"
+            />
         </Grid>
 
         <StackPanel Grid.Column="1">
