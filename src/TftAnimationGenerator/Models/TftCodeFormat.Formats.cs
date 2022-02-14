@@ -1,17 +1,16 @@
 using System.Collections.Generic;
 using TftAnimationGenerator.Formatters;
 
-namespace TftAnimationGenerator.Models
+namespace TftAnimationGenerator.Models;
+
+public partial class TftCodeFormat
 {
-    public partial class TftCodeFormat
+    public static IReadOnlyCollection<TftCodeFormat> CodeFormats { get; } = new List<TftCodeFormat>()
     {
-        public static IReadOnlyCollection<TftCodeFormat> CodeFormats { get; } = new List<TftCodeFormat>()
+        new()
         {
-            new()
-            {
-                Name = "Arduino",
-                CodeFormatter = new ArduinoCodeFormatter()
-            },
-        };
-    }
+            Name = "Arduino",
+            CodeFormatter = new ArduinoCodeFormatter()
+        },
+    };
 }

@@ -1,11 +1,10 @@
-﻿using ReactiveUI;
+using ReactiveUI;
 using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace TftAnimationGenerator.ViewModels
+namespace TftAnimationGenerator.ViewModels;
+
+public class ViewModelBase : ReactiveObject
 {
-    public class ViewModelBase : ReactiveObject
-    {
-    }
 }
