@@ -2,6 +2,7 @@
 
 [![Donate][donation-badge]](https://www.buymeacoffee.com/ComputerBaer)
 ![update-badge](https://img.shields.io/github/last-commit/ComputerBaer/TftAnimationGenerator?label=last%20update)
+![version-badge](https://img.shields.io/github/v/release/ComputerBaer/TftAnimationGenerator)
 
 [donation-badge]: https://img.shields.io/badge/Buy%20me%20a%20coffee-%23d32f2f?logo=buy-me-a-coffee&style=flat&logoColor=white
 
