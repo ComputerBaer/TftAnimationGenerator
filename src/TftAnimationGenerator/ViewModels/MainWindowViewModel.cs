@@ -125,6 +125,7 @@ public class MainWindowViewModel : ViewModelBase
                 Name = fileInfo.Name,
                 Width = imageInfo.Width,
                 Height = imageInfo.Height,
+                FrameMillis = 50,
             }, this));
         }
     }
