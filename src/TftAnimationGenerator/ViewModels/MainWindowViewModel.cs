@@ -258,6 +258,9 @@ public class MainWindowViewModel : ViewModelBase
 
         // footer
         await codeFormat.CodeFormatter.WriteFooterAsync(writer);
+
+        // info
+        await codeFormat.CodeFormatter.WriteFrameInfoAsync(writer, queue, prefix);
         await writer.FlushAsync();
     }
 

@@ -13,4 +13,6 @@ public interface ICodeFormatter
     Task WriteFrameAsync(StreamWriter writer, TftPixelFormat pixelFormat, Buffer2D<Rgba32> pixelBuffer, int width, int height, bool isLast);
 
     Task WriteFooterAsync(StreamWriter writer);
+
+    Task WriteFrameInfoAsync(StreamWriter writer, ExportQueueEntry[] entries, string prefix);
 }
