@@ -35,7 +35,12 @@ class Build : NukeBuild
     [Solution] readonly Solution Solution;
     [GitRepository] readonly GitRepository GitRepository;
 
-    static readonly string[] TargetRuntimes = { "win-x64", "win-x86", "linux-x64" };
+    static readonly TargetRuntime[] TargetRuntimes =
+    {
+        new("win-x64", "Win64", "zip"),
+        new("win-x86", "Win32", "zip"),
+        new("linux-x64", "Linux64", "tgz"),
+    };
 
     AbsolutePath SourceDirectory => RootDirectory / "src";
     AbsolutePath TestsDirectory => RootDirectory / "tests";
@@ -71,17 +76,20 @@ class Build : NukeBuild
         .DependsOn(Clean, Compile)
         .Executes(() =>
         {
-            foreach (var targetRuntime in TargetRuntimes)
+            foreach (var runtime in TargetRuntimes)
             {
                 DotNetPublish(s => s
                     .SetConfiguration(Configuration)
                     .SetVersion(Version)
-                    .SetRuntime(targetRuntime)
+                    .SetRuntime(runtime.BuildRuntime)
                     .EnablePublishSingleFile()
                     .DisableSelfContained()
-                    .SetOutput(OutputDirectory / targetRuntime)
+                    .SetOutput(OutputDirectory / runtime.BuildRuntime)
                 );
+                
+                CompressionTasks.Compress(OutputDirectory / runtime.BuildRuntime, OutputDirectory / $"TftAnimationGenerator_{runtime.FileName}.{runtime.FileExt}", info => !info.Name.EndsWith(".pdb"));
             }
         });
 
+    private record TargetRuntime(string BuildRuntime, string FileName, string FileExt);
 }
