@@ -4,8 +4,8 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:svg="clr-namespace:Avalonia.Svg.Skia;assembly=Avalonia.Svg.Skia"
-             mc:Ignorable="d" d:DesignWidth="400" d:DesignHeight="30"
-             Height="30"
+             mc:Ignorable="d" d:DesignWidth="400" d:DesignHeight="68"
+             Height="68"
              x:Class="TftAnimationGenerator.Views.QueueEntryView">
 
     <Design.DataContext>
@@ -25,9 +25,16 @@
         </Style>
     </UserControl.Styles>
 
-    <Grid ColumnDefinitions="*,Auto">
-        <Label Grid.Column="0" Content="{Binding Name}" />
-        <StackPanel Grid.Column="1" Orientation="Horizontal" IsVisible="{Binding ActionsVisible}">
+    <Grid ColumnDefinitions="*,96" RowDefinitions="32,Auto">
+        <Label Grid.Row="0" Grid.Column="0" Content="{Binding Name}" />
+
+        <NumericUpDown Grid.Row="1" Grid.Column="0"  Minimum="0" Padding="8"
+                       ShowButtonSpinner="False" ButtonSpinnerLocation="Left"
+                       Value="{Binding FrameMillis}"/>
+        <Label Grid.Row="1" Grid.Column="0" Margin="8, 0"
+               HorizontalAlignment="Right" VerticalAlignment="Center">ms</Label>
+
+        <StackPanel Grid.Row="0" Grid.Column="1" Orientation="Horizontal" IsVisible="{Binding ActionsVisible}">
             <Button Classes="IconButton" Command="{Binding MoveUpCmd}">
                 <Image Source="{svg:SvgImage /Assets/Icons/chevron-up.svg}" />
             </Button>

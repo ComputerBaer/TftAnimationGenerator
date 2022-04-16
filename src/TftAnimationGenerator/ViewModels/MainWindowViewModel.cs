@@ -125,6 +125,7 @@ public class MainWindowViewModel : ViewModelBase
                 Name = fileInfo.Name,
                 Width = imageInfo.Width,
                 Height = imageInfo.Height,
+                FrameMillis = 50,
             }, this));
         }
     }
@@ -257,6 +258,9 @@ public class MainWindowViewModel : ViewModelBase
 
         // footer
         await codeFormat.CodeFormatter.WriteFooterAsync(writer);
+
+        // info
+        await codeFormat.CodeFormatter.WriteFrameInfoAsync(writer, queue, prefix);
         await writer.FlushAsync();
     }
 

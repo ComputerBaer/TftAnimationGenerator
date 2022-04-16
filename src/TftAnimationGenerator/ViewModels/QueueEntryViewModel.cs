@@ -21,6 +21,12 @@ public class QueueEntryViewModel : ViewModelBase
         set => this.RaiseAndSetIfChanged(ref _actionsVisible, value);
     }
 
+    public int FrameMillis
+    {
+        get => Model.FrameMillis;
+        set => Model.FrameMillis = value;
+    }
+
     public ReactiveCommand<Unit, Unit> RemoveCmd { get; set; }
     public ReactiveCommand<Unit, Unit> MoveUpCmd { get; set; }
     public ReactiveCommand<Unit, Unit> MoveDownCmd { get; set; }

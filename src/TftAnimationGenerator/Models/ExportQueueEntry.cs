@@ -8,6 +8,8 @@ public class ExportQueueEntry
     public int Width { get; init; }
     public int Height { get; init; }
 
+    public int FrameMillis { get; set; }
+
     public ExportQueueEntry Clone()
     {
         return new()
@@ -16,6 +18,7 @@ public class ExportQueueEntry
             Filename = Filename,
             Width = Width,
             Height = Height,
+            FrameMillis = FrameMillis,
         };
     }
 }

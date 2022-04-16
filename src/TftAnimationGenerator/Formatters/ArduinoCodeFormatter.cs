@@ -1,5 +1,6 @@
 using System;
 using System.IO;
+using System.Linq;
 using System.Threading.Tasks;
 using SixLabors.ImageSharp.Memory;
 using SixLabors.ImageSharp.PixelFormats;
@@ -68,5 +69,12 @@ public class ArduinoCodeFormatter : ICodeFormatter
     public async Task WriteFooterAsync(StreamWriter writer)
     {
         await writer.WriteLineAsync("};");
+    }
+
+    public async Task WriteFrameInfoAsync(StreamWriter writer, ExportQueueEntry[] entries, string prefix)
+    {
+        int count = entries.Length;
+
+        await writer.WriteLineAsync($"const unsigned short {prefix}FrameMillis[{count}] = {{ {string.Join(", ", entries.Select(entry => entry.FrameMillis))} }};");
     }
 }
