@@ -49,6 +49,15 @@
         </Style>
     </Window.Styles>
 
+    <Window.DataTemplates>
+        <DataTemplate DataType="models:TftCodeFormat">
+            <Label Content="{Binding Name}" />
+        </DataTemplate>
+        <DataTemplate DataType="models:TftPixelFormat">
+            <Label Content="{Binding Name}" />
+        </DataTemplate>
+    </Window.DataTemplates>
+
     <Grid ColumnDefinitions="*,*" Margin="4">
         <Grid Grid.Column="0" RowDefinitions="Auto,*" Margin="0,0,4,0">
             <StackPanel Grid.Row="0" Orientation="Horizontal" Margin="0,0,0,4">
@@ -84,24 +93,12 @@
                 <Label Grid.Row="0" Grid.Column="0" Classes="FieldLabel">Pixel Format</Label>
                 <ComboBox Grid.Row="0" Grid.Column="1"
                           Items="{Binding PixelFormats}"
-                          SelectedIndex="{Binding SelectedPixelFormat}">
-                    <ComboBox.ItemTemplate>
-                        <DataTemplate DataType="models:TftPixelFormat">
-                            <Label Content="{Binding Name}" />
-                        </DataTemplate>
-                    </ComboBox.ItemTemplate>
-                </ComboBox>
+                          SelectedIndex="{Binding SelectedPixelFormat}" />
 
                 <Label Grid.Row="1" Grid.Column="0" Classes="FieldLabel">Code Format</Label>
                 <ComboBox Grid.Row="1" Grid.Column="1"
                           Items="{Binding CodeFormats}"
-                          SelectedIndex="{Binding SelectedCodeFormat}">
-                    <ComboBox.ItemTemplate>
-                        <DataTemplate DataType="models:TftCodeFormat">
-                            <Label Content="{Binding Name}" />
-                        </DataTemplate>
-                    </ComboBox.ItemTemplate>
-                </ComboBox>
+                          SelectedIndex="{Binding SelectedCodeFormat}" />
 
                 <Label Grid.Row="2" Grid.Column="0" Classes="FieldLabel">Code Prefix</Label>
                 <TextBox Grid.Row="2" Grid.Column="1" Text="{Binding CodePrefix}" />
