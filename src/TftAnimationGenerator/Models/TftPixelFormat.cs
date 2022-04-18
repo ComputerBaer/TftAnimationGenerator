@@ -6,6 +6,8 @@ namespace TftAnimationGenerator.Models;
 public partial class TftPixelFormat
 {
     public string Name { get; init; }
+    public string AlternateName { get; init; }
+    public string BitSizeInfo { get; init; }
 
     public int PixelComponentCount { get; set; }
     public int PixelComponentBitSize { get; set; }

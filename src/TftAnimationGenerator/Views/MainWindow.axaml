@@ -54,7 +54,11 @@
             <Label Content="{Binding Name}" />
         </DataTemplate>
         <DataTemplate DataType="models:TftPixelFormat">
-            <Label Content="{Binding Name}" />
+            <Grid ColumnDefinitions="*,*,64">
+                <Label Grid.Column="0" Content="{Binding Name}" />
+                <Label Grid.Column="1" Content="{Binding AlternateName}" />
+                <Label Grid.Column="2" Content="{Binding BitSizeInfo}" />
+            </Grid>
         </DataTemplate>
     </Window.DataTemplates>
 
